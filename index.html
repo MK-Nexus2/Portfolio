@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK Nexus | Hybrid Tech Agency</title>
+    <meta name="description" content="MK Nexus bridges Python data extraction with React-based SaaS terminals. Transition from brittle spreadsheets to high-performance visual intelligence.">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="MK Nexus | Hybrid Tech Agency">
+    <meta property="og:description" content="From brittle spreadsheets to high-performance visual intelligence.">
+    <meta property="og:type" content="website">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #020617;
+            --bg-card: rgba(15, 23, 42, 0.7);
+            --accent: #38bdf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        /* Custom Cursor */
+        .cursor-ring {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease-out, width 0.2s ease-out, height 0.2s ease-out;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+        
+        .cursor-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+        
+        .glassmorphism {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(56, 189, 248, 0.1);
+        }
+        
+        .portfolio-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .portfolio-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+        
+        .portfolio-image {
+            width: 100%;
+            height: 256px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(30, 64, 175, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .portfolio-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            100% {
+                left: 100%;
+            }
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(2, 6, 23, 0.95) 0%, transparent 60%);
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .portfolio-card:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        
+        /* Focus styles for accessibility */
+        a:focus, button:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            transform: translateY(-100%);
+            transition: transform 0.3s ease-out;
+        }
+        
+        .mobile-nav.active {
+            transform: translateY(0);
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        /* Form styles */
+        .form-input {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+        
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .cursor-ring, .cursor-dot {
+                display: none;
+            }
+            
+            body {
+                cursor: auto;
+            }
+            
+            .portfolio-card:hover {
+                transform: scale(1.02);
+            }
+            
+            .glass-card:hover {
+                transform: translateY(-4px);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            html {
+                scroll-padding-top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor-ring" aria-hidden="true"></div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    
+    <!-- Navigation -->
+    <header class="fixed top-0 left-0 w-full glassmorphism z-50 py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#hero" class="flex items-center space-x-2 focus:outline-none">
+                <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center">
+                    <span class="font-bold text-white">MK</span>
+                </div>
+                <span class="font-bold text-xl">MK Nexus</span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#hero" class="text-slate-300 hover:text-sky-400 transition-colors px-3 py-2 rounded-lg hover:bg-slate-800/30">Home</a>
+                <a href="#services" class="text-slate-300 hover:text-sky-400 transition-colors px-3 py-2 rounded-lg hover:bg-slate-800/30">Services</a>
+                <a href="#portfolio" class="text-slate-300 hover:text-sky-400 transition-colors px-3 py-2 rounded-lg hover:bg-slate-800/30">Portfolio</a>
+                <a href="#expertise" class="text-slate-300 hover:text-sky-400 transition-colors px-3 py-2 rounded-lg hover:bg-slate-800/30">Expertise</a>
+                <a href="#contact" class="text-slate-300 hover:text-sky-400 transition-colors px-3 py-2 rounded-lg hover:bg-slate-800/30">Contact</a>
+            </nav>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-slate-300 hover:text-sky-400 transition-colors p-2 rounded-lg hover:bg-slate-800/30 focus:outline-none" id="mobileMenuButton" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Desktop CTA Button -->
+            <a href="#contact" class="hidden md:inline-block px-6 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full font-medium hover:opacity-90 transition-opacity shadow-lg shadow-sky-500/20 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900">
+                Consult Now
+            </a>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav absolute top-full left-0 w-full glassmorphism md:hidden py-4 px-6" id="mobileNav">
+            <div class="flex flex-col space-y-4">
+                <a href="#hero" class="text-slate-300 hover:text-sky-400 transition-colors py-3 px-4 rounded-lg hover:bg-slate-800/30">Home</a>
+                <a href="#services" class="text-slate-300 hover:text-sky-400 transition-colors py-3 px-4 rounded-lg hover:bg-slate-800/30">Services</a>
+                <a href="#portfolio" class="text-slate-300 hover:text-sky-400 transition-colors py-3 px-4 rounded-lg hover:bg-slate-800/30">Portfolio</a>
+                <a href="#expertise" class="text-slate-300 hover:text-sky-400 transition-colors py-3 px-4 rounded-lg hover:bg-slate-800/30">Expertise</a>
+                <a href="#contact" class="text-slate-300 hover:text-sky-400 transition-colors py-3 px-4 rounded-lg hover:bg-slate-800/30">Contact</a>
+                <a href="#contact" class="px-6 py-3 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full font-medium hover:opacity-90 transition-opacity shadow-lg shadow-sky-500/20 text-center">
+                    Consult Now
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Back to Top Button -->
+    <button class="back-to-top w-12 h-12 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full flex items-center justify-center text-white shadow-xl shadow-sky-500/30 hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+    
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center pt-20">
+        <div class="container mx-auto px-6 py-20">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 reveal">
+                    From Brittle Spreadsheets to High-Performance Visual Intelligence
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-300 mb-10 max-w-3xl mx-auto reveal">
+                    We bridge the gap between Python-led Data Extraction and React-based SaaS Terminals. 
+                    <span class="text-sky-400 font-semibold">The 'No-Excel' Transition starts here.</span>
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-12 reveal">
+                    <a href="https://www.linkedin.com/in/muhammad-mk-nexus" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="px-8 py-4 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity shadow-xl shadow-sky-500/20 flex items-center justify-center gap-3 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900">
+                        <i class="fab fa-linkedin text-white"></i>
+                        Follow on LinkedIn
+                    </a>
+                    
+                    <a href="#portfolio" class="px-8 py-4 border border-slate-700 rounded-full font-semibold text-lg hover:bg-slate-800/50 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900">
+                        View Portfolio
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-24">
+                <div class="glass-card p-6 rounded-2xl reveal">
+                    <div class="text-sky-400 text-3xl font-bold mb-2">$40+/hr</div>
+                    <div class="text-slate-300">High-Ticket Value Proposition</div>
+                </div>
+                
+                <div class="glass-card p-6 rounded-2xl reveal">
+                    <div class="text-sky-400 text-3xl font-bold mb-2">100%</div>
+                    <div class="text-slate-300">Data Sovereignty & GDPR Compliance</div>
+                </div>
+                
+                <div class="glass-card p-6 rounded-2xl reveal">
+                    <div class="text-sky-400 text-3xl font-bold mb-2">10+</div>
+                    <div class="text-slate-300">Flagship SaaS Deployments</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section id="services" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-4 reveal">The Hybrid USP</h2>
+            <p class="text-slate-300 text-center max-w-2xl mx-auto mb-16 reveal">
+                A unique blend of data extraction, visual intelligence, and cybersecurity expertise.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Service Card 1 -->
+                <div class="glass-card p-8 rounded-2xl reveal">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-sky-500/20 to-sky-500/5 flex items-center justify-center mb-6">
+                        <i class="fas fa-database text-2xl text-sky-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Raw Data Extraction</h3>
+                    <p class="text-slate-300 mb-6">
+                        Advanced Python automation using Scrapy, Playwright, and BeautifulSoup for extracting, cleaning, and structuring data from diverse sources.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">Python</span>
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">Scrapy</span>
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">Playwright</span>
+                    </div>
+                </div>
+                
+                <!-- Service Card 2 -->
+                <div class="glass-card p-8 rounded-2xl reveal">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-sky-500/20 to-sky-500/5 flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-2xl text-sky-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Visual Intelligence</h3>
+                    <p class="text-slate-300 mb-6">
+                        React 19-powered dashboards with D3.js and Recharts for transforming raw data into actionable business intelligence.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">React 19</span>
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">D3.js</span>
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">Recharts</span>
+                    </div>
+                </div>
+                
+                <!-- Service Card 3 -->
+                <div class="glass-card p-8 rounded-2xl reveal">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-sky-500/20 to-sky-500/5 flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-2xl text-sky-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Cybersecurity & Ethics</h3>
+                    <p class="text-slate-300 mb-6">
+                        Cisco Certified Penetration Testing with a focus on data sovereignty, GDPR compliance, and ethical data handling practices.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">Cisco Certified</span>
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">Pen Testing</span>
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">GDPR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-gradient-to-b from-slate-950/50 to-slate-950/0">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-4 reveal">The Flagship 10</h2>
+            <p class="text-slate-300 text-center max-w-2xl mx-auto mb-16 reveal">
+                A selection of high-impact projects showcasing the transition from data extraction to visual intelligence.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                <!-- Portfolio Item 1 -->
+                <div class="portfolio-card reveal">
+                    <div class="portfolio-image bg-gradient-to-br from-sky-500/20 to-blue-600/20 rounded-xl animate-pulse"></div>
+                    <div class="portfolio-overlay">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Lead Scout Intelligence</h3>
+                            <p class="text-slate-300 mb-4">AI-powered lead generation with real-time enrichment</p>
+                            <button class="px-4 py-2 bg-sky-500 hover:bg-sky-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900" data-project="1">
+                                View Case Study
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 2 -->
+                <div class="portfolio-card reveal">
+                    <div class="portfolio-image bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-xl animate-pulse"></div>
+                    <div class="portfolio-overlay">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">EU Infrastructure Mapping</h3>
+                            <p class="text-slate-300 mb-4">GIS visualization of critical infrastructure across EU</p>
+                            <button class="px-4 py-2 bg-sky-500 hover:bg-sky-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900" data-project="2">
+                                View Case Study
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 3 -->
+                <div class="portfolio-card reveal">
+                    <div class="portfolio-image bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-xl animate-pulse"></div>
+                    <div class="portfolio-overlay">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Seller Metrics (Waterfall Analytics)</h3>
+                            <p class="text-slate-300 mb-4">E-commerce performance dashboard with waterfall analytics</p>
+                            <button class="px-4 py-2 bg-sky-500 hover:bg-sky-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900" data-project="3">
+                                View Case Study
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 4 -->
+                <div class="portfolio-card reveal">
+                    <div class="portfolio-image bg-gradient-to-br from-amber-500/20 to-orange-600/20 rounded-xl animate-pulse"></div>
+                    <div class="portfolio-overlay">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Edu Result Central</h3>
+                            <p class="text-slate-300 mb-4">Educational institution results management system</p>
+                            <button class="px-4 py-2 bg-sky-500 hover:bg-sky-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900" data-project="4">
+                                View Case Study
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 5 -->
+                <div class="portfolio-card reveal">
+                    <div class="portfolio-image bg-gradient-to-br from-red-500/20 to-rose-600/20 rounded-xl animate-pulse"></div>
+                    <div class="portfolio-overlay">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Talent Radar (HR Tech)</h3>
+                            <p class="text-slate-300 mb-4">AI-driven talent acquisition and management platform</p>
+                            <button class="px-4 py-2 bg-sky-500 hover:bg-sky-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900" data-project="5">
+                                View Case Study
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 6 -->
+                <div class="portfolio-card reveal">
+                    <div class="portfolio-image bg-gradient-to-br from-indigo-500/20 to-violet-600/20 rounded-xl animate-pulse"></div>
+                    <div class="portfolio-overlay">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Gem Insight Elite</h3>
+                            <p class="text-slate-300 mb-4">Precious stone market analytics and forecasting</p>
+                            <button class="px-4 py-2 bg-sky-500 hover:bg-sky-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900" data-project="6">
+                                View Case Study
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Expert Statement -->
+    <section id="expertise" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="glass-card p-10 rounded-3xl reveal">
+                    <h2 class="text-3xl font-bold mb-8 text-center">Data Sovereignty & High-Ticket Consulting</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fas fa-shield-check text-sky-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">GDPR Compliance & Client-Side Processing</h3>
+                                <p class="text-slate-300">
+                                    All data processing occurs within client-controlled environments. We implement zero-knowledge architectures ensuring data never leaves your sovereignty.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fas fa-trophy text-sky-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">$40/hr+ High-Ticket Value Proposition</h3>
+                                <p class="text-slate-300">
+                                    Premium consulting focused on ROI-driven outcomes. We eliminate spreadsheet bottlenecks and deliver enterprise-grade visual intelligence platforms.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fas fa-bridge text-sky-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">The "No-Excel" Transition Framework</h3>
+                                <p class="text-slate-300">
+                                    A systematic approach to migrate from brittle, manual spreadsheet processes to automated, real-time data pipelines and interactive dashboards.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12 pt-8 border-t border-slate-800 text-center">
+                        <p class="text-slate-300 italic mb-6">
+                            "In an era of data breaches and compliance complexities, sovereignty isn't a feature, it's the foundation."
+                        </p>
+                        <div class="flex items-center justify-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-white font-bold">
+                                MM
+                            </div>
+                            <div class="text-left">
+                                <div class="font-bold">Muhammad Maqsood</div>
+                                <div class="text-slate-400">Founder & Lead Consultant, MK Nexus</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Form -->
+    <section id="contact" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-4 reveal">Get In Touch</h2>
+                <p class="text-slate-300 text-center max-w-2xl mx-auto mb-12 reveal">
+                    Ready to transition beyond spreadsheets? Contact us for a consultation.
+                </p>
+                
+                <form id="contactForm" class="glass-card p-8 rounded-3xl space-y-6 reveal">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-slate-300 mb-2">Name</label>
+                            <input type="text" id="name" name="name" required
+                                   class="w-full px-4 py-3 rounded-xl form-input text-white focus:outline-none"
+                                   placeholder="Your name">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-slate-300 mb-2">Email</label>
+                            <input type="email" id="email" name="email" required
+                                   class="w-full px-4 py-3 rounded-xl form-input text-white focus:outline-none"
+                                   placeholder="you@company.com">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="company" class="block text-slate-300 mb-2">Company</label>
+                        <input type="text" id="company" name="company"
+                               class="w-full px-4 py-3 rounded-xl form-input text-white focus:outline-none"
+                               placeholder="Your company (optional)">
+                    </div>
+                    
+                    <div>
+                        <label for="message" class="block text-slate-300 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="4" required
+                                  class="w-full px-4 py-3 rounded-xl form-input text-white focus:outline-none"
+                                  placeholder="Tell us about your project..."></textarea>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <button type="submit"
+                                class="w-full px-8 py-4 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity shadow-xl shadow-sky-500/20 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900">
+                            Send Message
+                        </button>
+                    </div>
+                    
+                    <div id="formMessage" class="hidden p-4 rounded-xl text-center"></div>
+                </form>
+                
+                <div class="mt-12 text-center">
+                    <p class="text-slate-300 mb-6">Or connect with us on LinkedIn</p>
+                    <a href="https://www.linkedin.com/in/muhammad-mk-nexus" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center gap-3 px-8 py-4 border border-slate-700 rounded-full font-semibold text-lg hover:bg-slate-800/50 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900">
+                        <i class="fab fa-linkedin text-sky-400"></i>
+                        Connect on LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-16 border-t border-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-slate-800">
+                    <div class="flex items-center space-x-2 mb-6 md:mb-0">
+                        <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center">
+                            <span class="font-bold text-white">MK</span>
+                        </div>
+                        <span class="font-bold text-xl">MK Nexus</span>
+                    </div>
+                    
+                    <div class="text-slate-400">
+                        <p>Hybrid Tech Agency | Python + React Stack</p>
+                        <p class="mt-1">Specializing in Data Sovereignty & Visual Intelligence</p>
+                    </div>
+                </div>
+                
+                <div class="mt-10 text-slate-500 text-sm">
+                    <p>© 2024 MK Nexus. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal for Portfolio Details -->
+    <div id="portfolioModal" class="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+        <div class="glass-card max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-8 transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-start mb-6">
+                <h3 id="modalTitle" class="text-2xl font-bold"></h3>
+                <button id="closeModal" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-sky-500" aria-label="Close modal">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="modalContent" class="space-y-4 text-slate-300"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize variables
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+        let cursorRing = null;
+        let cursorDot = null;
+        let animationFrameId = null;
+        
+        // DOM Elements
+        const elements = {
+            cursorRing: () => document.querySelector('.cursor-ring'),
+            cursorDot: () => document.querySelector('.cursor-dot'),
+            mobileMenuButton: () => document.getElementById('mobileMenuButton'),
+            mobileNav: () => document.getElementById('mobileNav'),
+            backToTop: () => document.getElementById('backToTop'),
+            contactForm: () => document.getElementById('contactForm'),
+            formMessage: () => document.getElementById('formMessage'),
+            portfolioModal: () => document.getElementById('portfolioModal'),
+            modalTitle: () => document.getElementById('modalTitle'),
+            modalContent: () => document.getElementById('modalContent'),
+            closeModal: () => document.getElementById('closeModal')
+        };
+        
+        // Portfolio data
+        const portfolioData = {
+            1: {
+                title: "Lead Scout Intelligence",
+                description: "AI-powered lead generation platform with real-time enrichment capabilities.",
+                details: [
+                    "Advanced web scraping algorithms for lead discovery",
+                    "Real-time data enrichment from 50+ sources",
+                    "Machine learning for lead scoring and prioritization",
+                    "React-based dashboard with interactive visualizations",
+                    "GDPR-compliant data processing pipeline"
+                ],
+                technologies: ["Python", "React", "Scrapy", "FastAPI", "PostgreSQL"]
+            },
+            2: {
+                title: "EU Infrastructure Mapping",
+                description: "GIS visualization platform for critical infrastructure across European Union.",
+                details: [
+                    "Interactive map visualization with D3.js and Mapbox",
+                    "Real-time infrastructure status monitoring",
+                    "Predictive analytics for maintenance scheduling",
+                    "Secure data transmission with end-to-end encryption",
+                    "Multi-language support for EU member states"
+                ],
+                technologies: ["React", "D3.js", "Python", "GIS", "AWS"]
+            },
+            3: {
+                title: "Seller Metrics (Waterfall Analytics)",
+                description: "E-commerce performance dashboard with advanced waterfall analytics.",
+                details: [
+                    "Real-time sales analytics and forecasting",
+                    "Waterfall visualization for profit/loss analysis",
+                    "Inventory optimization recommendations",
+                    "Multi-channel sales integration",
+                    "Automated reporting and alert system"
+                ],
+                technologies: ["React", "Node.js", "MongoDB", "Recharts", "Python"]
+            },
+            4: {
+                title: "Edu Result Central",
+                description: "Educational institution results management and analysis system.",
+                details: [
+                    "Secure student data management",
+                    "Automated result processing and grading",
+                    "Predictive analytics for student performance",
+                    "Parent and teacher portals",
+                    "Comprehensive reporting system"
+                ],
+                technologies: ["Python", "Django", "React", "PostgreSQL", "Docker"]
+            },
+            5: {
+                title: "Talent Radar (HR Tech)",
+                description: "AI-driven talent acquisition and management platform.",
+                details: [
+                    "Resume parsing with NLP algorithms",
+                    "Candidate matching using machine learning",
+                    "Interview scheduling and tracking",
+                    "Diversity and inclusion analytics",
+                    "Integration with major job boards"
+                ],
+                technologies: ["Python", "FastAPI", "React", "Redis", "Elasticsearch"]
+            },
+            6: {
+                title: "Gem Insight Elite",
+                description: "Precious stone market analytics and forecasting platform.",
+                details: [
+                    "Real-time gemstone pricing analytics",
+                    "Market trend forecasting with ML models",
+                    "Quality assessment algorithms",
+                    "Supplier verification system",
+                    "Blockchain-based provenance tracking"
+                ],
+                technologies: ["Python", "React", "Blockchain", "TensorFlow", "AWS"]
+            }
+        };
+        
+        // Initialize application
+        function init() {
+            setupCursor();
+            setupNavigation();
+            setupScrollEffects();
+            setupContactForm();
+            setupPortfolioModal();
+            setupEventListeners();
+            
+            // Trigger initial reveal for elements in view
+            revealOnScroll();
+        }
+        
+        // Custom Cursor with smooth animation
+        function setupCursor() {
+            cursorRing = elements.cursorRing();
+            cursorDot = elements.cursorDot();
+            
+            if (!cursorRing || !cursorDot) return;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                if (!animationFrameId) {
+                    animationFrameId = requestAnimationFrame(animateCursor);
+                }
+            });
+            
+            // Add hover effect to interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, input, textarea, .portfolio-card');
+            
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    if (cursorRing) {
+                        cursorRing.style.width = '40px';
+                        cursorRing.style.height = '40px';
+                        cursorRing.style.borderColor = '#38bdf8';
+                        cursorRing.style.borderWidth = '2px';
+                    }
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    if (cursorRing) {
+                        cursorRing.style.width = '24px';
+                        cursorRing.style.height = '24px';
+                        cursorRing.style.borderColor = '#38bdf8';
+                        cursorRing.style.borderWidth = '2px';
+                    }
+                });
+            });
+        }
+        
+        // Smooth cursor animation
+        function animateCursor() {
+            const smoothness = 0.1;
+            cursorX += (mouseX - cursorX) * smoothness;
+            cursorY += (mouseY - cursorY) * smoothness;
+            
+            if (cursorRing) {
+                cursorRing.style.left = `${cursorX}px`;
+                cursorRing.style.top = `${cursorY}px`;
+            }
+            
+            if (cursorDot) {
+                cursorDot.style.left = `${mouseX}px`;
+                cursorDot.style.top = `${mouseY}px`;
+            }
+            
+            animationFrameId = requestAnimationFrame(animateCursor);
+        }
+        
+        // Navigation setup
+        function setupNavigation() {
+            const mobileMenuButton = elements.mobileMenuButton();
+            const mobileNav = elements.mobileNav();
+            
+            if (mobileMenuButton && mobileNav) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileNav.classList.toggle('active');
+                    mobileMenuButton.setAttribute('aria-expanded', 
+                        mobileNav.classList.contains('active'));
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!mobileNav.contains(e.target) && 
+                        !mobileMenuButton.contains(e.target) && 
+                        mobileNav.classList.contains('active')) {
+                        mobileNav.classList.remove('active');
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                
+                // Close mobile menu when clicking links
+                mobileNav.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNav.classList.remove('active');
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    });
+                });
+            }
+        }
+        
+        // Scroll effects
+        function setupScrollEffects() {
+            const backToTop = elements.backToTop();
+            
+            if (backToTop) {
+                backToTop.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            
+            // Throttle scroll events for performance
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                if (!scrollTimeout) {
+                    scrollTimeout = setTimeout(() => {
+                        revealOnScroll();
+                        toggleBackToTop();
+                        scrollTimeout = null;
+                    }, 100);
+                }
+            });
+        }
+        
+        // Scroll reveal animation with throttling
+        function revealOnScroll() {
+            const revealElements = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+            const revealPoint = 150;
+            
+            revealElements.forEach(element => {
+                const revealTop = element.getBoundingClientRect().top;
+                
+                if (revealTop < windowHeight - revealPoint) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        // Toggle back to top button
+        function toggleBackToTop() {
+            const backToTop = elements.backToTop();
+            if (!backToTop) return;
+            
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        }
+        
+        // Smooth scroll for navigation links
+        function setupEventListeners() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        
+                        const headerOffset = window.innerWidth < 640 ? 60 : 80;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Portfolio card interactions
+            document.querySelectorAll('.portfolio-card button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const projectId = e.currentTarget.getAttribute('data-project');
+                    if (projectId && portfolioData[projectId]) {
+                        showPortfolioModal(projectId);
+                    }
+                });
+            });
+        }
+        
+        // Contact form handling
+        function setupContactForm() {
+            const contactForm = elements.contactForm();
+            const formMessage = elements.formMessage();
+            
+            if (contactForm && formMessage) {
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(contactForm);
+                    const submitButton = contactForm.querySelector('button[type="submit"]');
+                    const originalText = submitButton.textContent;
+                    
+                    // Show loading state
+                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+                    submitButton.disabled = true;
+                    
+                    try {
+                        // Simulate API call
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        
+                        // Show success message
+                        formMessage.textContent = 'Thank you! Your message has been sent. We\'ll get back to you soon.';
+                        formMessage.className = 'p-4 rounded-xl text-center bg-green-500/10 text-green-400';
+                        formMessage.classList.remove('hidden');
+                        
+                        // Reset form
+                        contactForm.reset();
+                        
+                        // Scroll to message
+                        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                    } catch (error) {
+                        // Show error message
+                        formMessage.textContent = 'Sorry, there was an error sending your message. Please try again.';
+                        formMessage.className = 'p-4 rounded-xl text-center bg-red-500/10 text-red-400';
+                        formMessage.classList.remove('hidden');
+                    } finally {
+                        // Reset button state
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                        
+                        // Hide message after 5 seconds
+                        setTimeout(() => {
+                            formMessage.classList.add('hidden');
+                        }, 5000);
+                    }
+                });
+            }
+        }
+        
+        // Portfolio modal
+        function setupPortfolioModal() {
+            const modal = elements.portfolioModal();
+            const closeModal = elements.closeModal();
+            
+            if (closeModal) {
+                closeModal.addEventListener('click', () => {
+                    closePortfolioModal();
+                });
+            }
+            
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closePortfolioModal();
+                    }
+                });
+                
+                // Close modal on Escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && modal.classList.contains('opacity-100')) {
+                        closePortfolioModal();
+                    }
+                });
+            }
+        }
+        
+        function showPortfolioModal(projectId) {
+            const modal = elements.portfolioModal();
+            const modalTitle = elements.modalTitle();
+            const modalContent = elements.modalContent();
+            const project = portfolioData[projectId];
+            
+            if (!modal || !modalTitle || !modalContent || !project) return;
+            
+            // Set modal content
+            modalTitle.textContent = project.title;
+            
+            let contentHTML = `
+                <p class="text-lg mb-6">${project.description}</p>
+                <div class="mb-6">
+                    <h4 class="font-bold text-slate-200 mb-3">Key Features:</h4>
+                    <ul class="space-y-2">
+            `;
+            
+            project.details.forEach(detail => {
+                contentHTML += `<li class="flex items-start">
+                    <i class="fas fa-check text-sky-400 mt-1 mr-3 flex-shrink-0"></i>
+                    <span>${detail}</span>
+                </li>`;
+            });
+            
+            contentHTML += `
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-200 mb-3">Technologies Used:</h4>
+                    <div class="flex flex-wrap gap-2">
+            `;
+            
+            project.technologies.forEach(tech => {
+                contentHTML += `<span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-sm">${tech}</span>`;
+            });
+            
+            contentHTML += `
+                    </div>
+                </div>
+            `;
+            
+            modalContent.innerHTML = contentHTML;
+            
+            // Show modal
+            modal.classList.remove('opacity-0', 'invisible');
+            modal.classList.add('opacity-100', 'visible');
+            
+            // Animate modal content
+            setTimeout(() => {
+                modal.querySelector('.glass-card').classList.remove('scale-95');
+                modal.querySelector('.glass-card').classList.add('scale-100');
+            }, 10);
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closePortfolioModal() {
+            const modal = elements.portfolioModal();
+            
+            if (!modal) return;
+            
+            // Animate modal out
+            modal.querySelector('.glass-card').classList.remove('scale-100');
+            modal.querySelector('.glass-card').classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.remove('opacity-100', 'visible');
+                modal.classList.add('opacity-0', 'invisible');
+                
+                // Restore body scroll
+                document.body.style.overflow = '';
+            }, 200);
+        }
+        
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', init);
+        
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        });
+    </script>
+</body>
+</html>
